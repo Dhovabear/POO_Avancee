@@ -15,9 +15,8 @@ public class Main {
         }
 
 
-        for(Voiture v : participants){
-            v.join();
-        }
+
+        for(Voiture v : participants) v.join();
 
         Thread.sleep(500);
         System.out.println("La course est finie !");

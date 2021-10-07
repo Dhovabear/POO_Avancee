@@ -1,5 +1,8 @@
 package TP1.Exo5;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
 public class Voiture extends Thread{
     private String nom;
     private Circuit circuit;
@@ -14,17 +17,27 @@ public class Voiture extends Thread{
     @Override
     public void run() {
 
-        do{
-            try {
-                Thread.sleep((long) (Math.random() * ((7000-3000) +1)));
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setDecimalSeparator('.');
+        DecimalFormat df = new DecimalFormat("###.##",dfs);
 
-                if( (long)(Math.random() * ((1) + 1) ) == 1)circuit.stopStand();
+        do{
+            long time = System.currentTimeMillis();
+            try {
+
+
+
+                Thread.sleep((long) ( (Math.random()*(7000-3000)) + 3000 ) );
+
+                if( (long)(Math.random() * ( (1 - 0) + 1) ) == 1)circuit.stopStand();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             toursFaits++;
-            System.out.println(nom + " vient de finir le tour " + toursFaits);
+
+            long tmpsTours = System.currentTimeMillis() - time;
+            System.out.println(nom + " vient de finir le tour " + toursFaits + " en " + df.format(((double)tmpsTours)/1000) +"s");
         }while (circuit.finishTour());
 
         System.err.println("La voiture " + nom + " est arrivée en position " + circuit.getPosition());
