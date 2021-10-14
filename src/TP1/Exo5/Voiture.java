@@ -29,7 +29,7 @@ public class Voiture extends Thread{
 
                 Thread.sleep((long) ( (Math.random()*(7000-3000)) + 3000 ) );
 
-                if( (long)(Math.random() * ( (1 - 0) + 1) ) == 1)circuit.stopStand();
+                if( (long)(Math.random() * ( (1) + 1) ) == 1)circuit.stopStand();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
