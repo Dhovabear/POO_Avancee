@@ -1,13 +1,13 @@
 package TP2;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import  org.apache.derby.jdbc.EmbeddedDriver;
 
 public class BDD {
-    public static BDD instance;
+
+    private static BDD instance;
 
     private Connection con;
 
@@ -29,6 +29,30 @@ public class BDD {
             System.err.println("Probleme de connection a a bdd");
             /*throwables.printStackTrace();*/
         }
+    }
+
+
+    public void disconnect(){
+        try {
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ResultSet select(String req){
+        Statement requette = null;
+        ResultSet res = null;
+
+        try {
+            requette = con.createStatement();
+            res = requette.executeQuery(req);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
     }
 
     public static BDD getInstance(){
