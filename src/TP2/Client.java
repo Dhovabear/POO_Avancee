@@ -34,10 +34,41 @@ public class Client {
     }
 
 
+
+
+    public static Client getClientWithId(int id) throws SQLException {
+
+        ResultSet res = BDD.getInstance().select("SELECT * FROM client WHERE id = "+id);
+        Client c = null;
+
+
+        res.next();
+        c = new Client(res.getInt("id"),res.getString("nom"),res.getString("prenom"));
+
+
+        return c;
+    }
+
+
     public Client(int id, String nom, String prenom) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
+    }
+
+    public Client(){}
+
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
     }
 
     @Override
@@ -50,4 +81,7 @@ public class Client {
 
         return sb.toString();
     }
+
+
+
 }
