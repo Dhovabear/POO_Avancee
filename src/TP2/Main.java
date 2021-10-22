@@ -36,7 +36,7 @@ public class Main {
                     System.out.println(cm);
             }else if(choix == 3){
                 System.out.println("----Saisie d'une nouvelle commande----");
-                Commande c = Commande.prompt();
+                Commande c = (new SQLSerializer<Commande>()).prompt(Commande.class);
                 System.out.println();
 
 
