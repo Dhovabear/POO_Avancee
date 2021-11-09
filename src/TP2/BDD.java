@@ -19,7 +19,7 @@ public class BDD {
         try{
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
-            String connectionString = "jdbc:derby:D:\\Documents\\Lpro\\POO\\POOAvancee\\BDDDerby\\Bdd";
+            String connectionString = "jdbc:derby:D:/Documents/l3pro/poo/BDDDerby/Bdd";//a changer
             con = DriverManager.getConnection(connectionString);
 
         } catch (ClassNotFoundException e) {
@@ -55,8 +55,47 @@ public class BDD {
         return res;
     }
 
+    public boolean insert(String commande){
+        Statement st = null;
+
+        try {
+            st = con.createStatement();
+            st.executeUpdate(commande);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean remove(String commande){
+        Statement st = null;
+
+        try {
+            st = con.createStatement();
+            st.executeUpdate(commande);
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
+
+    public PreparedStatement getPreparedStatement(String commande){
+        PreparedStatement prst = null;
+        try {
+            prst = con.prepareStatement(commande);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return prst;
+    }
+
+
     public static BDD getInstance(){
         if(instance == null) instance = new BDD();
         return instance;
     }
+
 }

@@ -1,7 +1,9 @@
 package TP2;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,9 +14,7 @@ public class Commande {
     private double montant;
     private int Idclient;
 
-    /*private static int nextIdToTake = ;
-
-    getAllCommandes().get(getAllCommandes().size()).numero;*/
+    //private static int nextIdToTake = getAllCommandes().get(0).numero;
 
     public Commande(int numero, String description, double montant, int clientId) {
         this.numero = numero;
@@ -61,7 +61,7 @@ public class Commande {
 
         ArrayList<Commande> listeCommandes = new ArrayList<>();
 
-        ResultSet res = BDD.getInstance().select("SELECT * FROM COMMANDE");
+        ResultSet res = BDD.getInstance().select("SELECT * FROM COMMANDE ORDER BY NUMERO");
 
         try{
             while (res.next()){
@@ -78,10 +78,45 @@ public class Commande {
         }
 
 
-
+        //System.out.println("Dernier num: " + listeCommandes.get(listeCommandes.size()-1).numero);
         return listeCommandes;
     }
 
+    public static boolean addCommandes(ArrayList<Commande> commandes){
+        PreparedStatement prepStat = BDD.getInstance().getPreparedStatement("INSERT INTO Commande (numero,description,montant,id_client) VALUES (?,?,?,?)");
+
+        for (Commande cmd : commandes) {
+            try {
+                prepStat.setInt(1,cmd.numero);
+                prepStat.setString(2,cmd.description);
+                prepStat.setDouble(3,cmd.montant);
+                prepStat.setInt(3,cmd.Idclient);
+                prepStat.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean addCommande(Commande c){
+        PreparedStatement prepStat = BDD.getInstance().getPreparedStatement("INSERT INTO Commande (numero,description,montant,id_client) VALUES (?,?,?,?)");
+
+        try {
+            prepStat.setInt(1,c.numero);
+            prepStat.setString(2,c.description);
+            prepStat.setDouble(3,c.montant);
+            prepStat.setInt(3,c.Idclient);
+            prepStat.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
 
     public static Commande prompt(){
         Commande c = new Commande();
@@ -96,6 +131,12 @@ public class Commande {
         c.Idclient = Main.in.nextInt();
 
         return c;
+    }
+
+    public static void removeCommande(Commande cmd) {
+        StringBuilder sb = new StringBuilder("DELETE FROM Commande WHERE numero=");
+        sb.append(cmd.numero);
+        BDD.getInstance().remove(sb.toString());
     }
 
 

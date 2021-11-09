@@ -183,6 +183,8 @@ public class TestJframe {
         for(String item : tmp)
             model.addElement(item);
 
+
+
         list1.setModel(model);
 
     }
